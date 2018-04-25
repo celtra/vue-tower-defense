@@ -6,6 +6,16 @@
             <span>Health: <b>{{ health }}</b></span>
             <button @click="$emit('buy', 'heal')" :disabled="!isAlive || health >= maxHealth">Heal ({{ costs.heal }})</button>
         </div>
+
+        <div class="buyable">
+            <span>Damage: <b>{{ damage }}</b></span>
+            <button @click="$emit('buy', 'damage')" :disabled="!isAlive">Upgrade ({{ costs.damage }})</button>
+        </div>
+
+        <div class="buyable">
+            <span>Farm: <b>{{ farm }}</b></span>
+            <button @click="$emit('buy', 'farm')" :disabled="!isAlive">Upgrade ({{ costs.farm }})</button>
+        </div>
     </div>
 </template>
 
@@ -16,7 +26,9 @@ export default {
     },
     data () {
         return {
-            health: this.maxHealth
+            health: this.maxHealth,
+            numDamageUpgrades: 0,
+            numFarmUpgrades: 0
         }
     },
     computed: {
@@ -24,14 +36,16 @@ export default {
             return this.health > 0
         },
         damage () {
-            return 10
+            return 10 + 10 * this.numDamageUpgrades
         },
         farm () {
-            return 20
+            return 20 + 15 * this.numFarmUpgrades
         },
         costs () {
             return {
-                heal: 20
+                heal: 20,
+                damage: Math.floor(40 * Math.pow(1.2, this.numDamageUpgrades)),
+                farm: Math.floor(50 * Math.pow(1.3, this.numFarmUpgrades))
             }
         }
     },
@@ -42,9 +56,15 @@ export default {
                 this.health = 0
         },
         onBought (name) {
-            this.health += 40
-            if (this.health > this.maxHealth)
-                this.health = this.maxHealth
+            if (name === 'heal') {
+                this.health += 40
+                if (this.health > this.maxHealth)
+                    this.health = this.maxHealth
+            } else if (name === 'damage') {
+                this.numDamageUpgrades ++
+            } else if (name === 'farm') {
+                this.numFarmUpgrades ++
+            }
         }
     }
 }
