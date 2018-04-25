@@ -21,8 +21,8 @@
 
 <script>
 export default {
-    beforeCreate () {
-        this.maxHealth = 100
+    props: {
+        maxHealth: { type: Number }
     },
     data () {
         return {

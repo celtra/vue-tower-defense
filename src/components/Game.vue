@@ -7,7 +7,7 @@
         <progress class="boss-health" :value="bossHealth" max="500"></progress>
 
         <div class="towers">
-            <tower ref="tower" v-for="index in 3" :key="index" @buy="(name) => onBuy(index, name)"></tower>
+            <tower ref="tower" v-for="index in 3" :key="index" :max-health="index === 2 ? 300 : 100" @buy="(name) => onBuy(index, name)"></tower>
         </div>
 
         <div class="info">
