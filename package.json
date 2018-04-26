@@ -4,9 +4,10 @@
   "description": "Tower defense game for Celtra's Vue workshop.",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --mode=development --open --hot --port 8080",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "postinstall": "npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
