@@ -24,16 +24,24 @@ export default {
     components: {
         tower: Tower
     },
+    beforeCreate () {
+        this.initialBossHealth = 500
+        this.initialBossDamage = 30
+    },
     data () {
         return {
-            bossHealth: 500,
-            bossDamage: 25,
-            resources: 1000
+            bossHealth: this.initialBossHealth,
+            bossDamage: this.initialBossDamage,
+            resources: 1000,
+            numBossesDefeated: 0
         }
     },
     computed: {
         isEveryTowerDead () {
             return this.$refs.tower.every(tower => !tower.isAlive)
+        },
+        maxBossHealth () {
+            return Math.floor(this.initialBossHealth * Math.pow(1.4, this.numBossesDefeated))
         }
     },
     methods: {
@@ -55,10 +63,23 @@ export default {
                 this.resources += tower.farm
             })
 
-            if (this.bossHealth <= 0)
-                this.$router.push({ name: 'Over', params: { won: true } })
-            else if (this.isEveryTowerDead)
-                this.$router.push({ name: 'Over', params: { won: false } })
+            if (Math.random() < 1/5) {
+                this.bossHealth += 50
+                if (this.bossHealth > this.maxBossHealth)
+                    this.bossHealth = this.maxBossHealth
+            }
+            this.bossDamage = Math.floor(this.bossDamage * 1.06)
+
+            if (this.bossHealth <= 0) {
+                this.numBossesDefeated ++
+                this.bossHealth = this.maxBossHealth
+                this.bossDamage = this.initialBossDamage
+                towers.forEach(tower => {
+                    tower.resetHealth()
+                })
+            } else if (this.isEveryTowerDead) {
+                this.$router.push({ name: 'Over', params: { score: this.numBossesDefeated } })
+            }
         }
     }
 }
