@@ -1,6 +1,10 @@
 <template>
     <div>
-        <h1>{{ text }}</h1>
+        <div class="boss">
+            <p>Health: <b>{{ bossHealth }}</b></p>
+            <p>Damage: <b>{{ bossDamage }}</b></p>
+        </div>
+        <progress class="boss-health" :value="bossHealth" max="500"></progress>
     </div>
 </template>
 
@@ -8,7 +12,8 @@
 export default {
     data () {
         return {
-            text: 'Hello world!'
+            bossHealth: 500,
+            bossDamage: 25
         }
     }
 }
