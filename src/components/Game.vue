@@ -5,11 +5,20 @@
             <p>Damage: <b>{{ bossDamage }}</b></p>
         </div>
         <progress class="boss-health" :value="bossHealth" max="500"></progress>
+
+        <div class="towers">
+            <tower></tower>
+        </div>
     </div>
 </template>
 
 <script>
+import Tower from './Tower.vue'
+
 export default {
+    components: {
+        tower: Tower
+    },
     data () {
         return {
             bossHealth: 500,
