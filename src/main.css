@@ -104,17 +104,17 @@ h2 {
     margin: 0 auto;
 }
 
-.tower > .buyable {
+.tower > .stat {
     padding: 10px;
     display: flex;
     justify-content: space-between;
 }
 
-.tower > .buyable > span {
+.tower > .stat > span {
     font-size: 13px;
 }
 
-.tower > .buyable > button {
+.tower > .stat > button {
     font-size: 10px;
 }
 
