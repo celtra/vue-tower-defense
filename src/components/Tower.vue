@@ -1,6 +1,7 @@
 <template>
     <div class="tower" :class="{'tower-dead': !isAlive}">
-        <progress class="health" :value="health" :max="maxHealth"></progress>
+        <progress v-if="isAlive" class="health" :value="health" :max="maxHealth"></progress>
+        <button v-else @click="$emit('buy', 'revive')" class="revive">Revive ({{ costs.revive }})</button>
 
         <div class="stat">
             <span>Health: <b>{{ health }}</b></span>
@@ -16,6 +17,11 @@
             <span>Farm: <b>{{ farm }}</b></span>
             <button @click="$emit('buy', 'farm')" :disabled="!isAlive">Upgrade ({{ costs.farm }})</button>
         </div>
+
+        <div class="stat">
+            <span>Defense: <b>{{ Math.floor(defense * 100) }}%</b></span>
+            <button @click="$emit('buy', 'defense')" :disabled="!isAlive">Upgrade ({{ costs.defense }})</button>
+        </div>
     </div>
 </template>
 
@@ -28,7 +34,8 @@ export default {
         return {
             health: this.maxHealth,
             numDamageUpgrades: 0,
-            numFarmUpgrades: 0
+            numFarmUpgrades: 0,
+            numDefenseUpgrades: 0
         }
     },
     computed: {
@@ -41,17 +48,22 @@ export default {
         farm () {
             return 20 + 15 * this.numFarmUpgrades
         },
+        defense () {
+            return 1 - Math.pow(0.95, this.numDefenseUpgrades)
+        },
         costs () {
             return {
                 heal: 20,
                 damage: Math.floor(40 * Math.pow(1.2, this.numDamageUpgrades)),
-                farm: Math.floor(50 * Math.pow(1.3, this.numFarmUpgrades))
+                farm: Math.floor(50 * Math.pow(1.3, this.numFarmUpgrades)),
+                defense: Math.floor(30 * Math.pow(1.2, this.numDefenseUpgrades)),
+                revive: 200
             }
         }
     },
     methods: {
         takeDamage (damage) {
-            this.health -= damage
+            this.health -= Math.floor(damage * (1 - this.defense))
             if (this.health < 0)
                 this.health = 0
         },
@@ -64,7 +76,14 @@ export default {
                 this.numDamageUpgrades ++
             } else if (name === 'farm') {
                 this.numFarmUpgrades ++
+            } else if (name === 'defense') {
+                this.numDefenseUpgrades ++
+            } else if (name === 'revive') {
+                this.health = this.maxHealth
             }
+        },
+        resetHealth () {
+            this.health = this.maxHealth
         }
     }
 }
