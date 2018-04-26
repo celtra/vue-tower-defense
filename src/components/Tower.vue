@@ -2,9 +2,17 @@
     <div class="tower" :class="{'tower-dead': !isAlive}">
         <progress class="health" :value="health" :max="maxHealth"></progress>
 
-        <div class="buyable">
+        <div class="stat">
             <span>Health: <b>{{ health }}</b></span>
             <button @click="$emit('buy', 'heal')" :disabled="!isAlive || health >= maxHealth">Heal ({{ costs.heal }})</button>
+        </div>
+
+        <div class="stat">
+            <span>Damage: <b>{{ damage }}</b></span>
+        </div>
+
+        <div class="stat">
+            <span>Farm: <b>{{ farm }}</b></span>
         </div>
     </div>
 </template>
