@@ -18,9 +18,9 @@
             <button @click="$emit('buy', 'farm')" :disabled="!isAlive">Upgrade ({{ costs.farm }})</button>
         </div>
 
-        <div class="buyable">
+        <div class="stat">
             <span>Defense: <b>{{ Math.floor(defense * 100) }}%</b></span>
-            <button class="buy" @click="$emit('buy', 'defense')" :disabled="!isAlive">Upgrade ({{ costs.defense }})</button>
+            <button @click="$emit('buy', 'defense')" :disabled="!isAlive">Upgrade ({{ costs.defense }})</button>
         </div>
     </div>
 </template>
