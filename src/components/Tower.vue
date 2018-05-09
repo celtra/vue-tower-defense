@@ -1,9 +1,10 @@
 <template>
     <div class="tower" :class="{'tower-dead': !isAlive}">
-        <progress class="health" :value="health" max="100"></progress>
+        <progress class="health" :value="health" :max="maxHealth"></progress>
 
         <div class="stat">
             <span>Health: <b>{{ health }}</b></span>
+            <button @click="health += 20" :disabled="!isAlive || health >= maxHealth">Heal</button>
         </div>
 
         <div class="stat">
@@ -18,9 +19,12 @@
 
 <script>
 export default {
+    beforeCreate () {
+        this.maxHealth = 100
+    },
     data () {
         return {
-            health: 100
+            health: this.maxHealth
         }
     },
     computed: {
