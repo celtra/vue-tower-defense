@@ -33,6 +33,13 @@ export default {
         farm () {
             return 20
         }
+    },
+    methods: {
+        takeDamage (damage) {
+            this.health -= damage
+            if (this.health < 0)
+                this.health = 0
+        }
     }
 }
 </script>
