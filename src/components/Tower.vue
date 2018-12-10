@@ -4,7 +4,7 @@
 
         <div class="stat">
             <span>Health: <b>{{ health }}</b></span>
-            <button @click="health += 20" :disabled="!isAlive || health >= maxHealth">Heal</button>
+            <button @click="$emit('buy', 'heal')" :disabled="!isAlive || health >= maxHealth">Heal ({{ costs.heal }})</button>
         </div>
 
         <div class="stat">
@@ -36,6 +36,11 @@ export default {
         },
         farm () {
             return 20
+        },
+        costs () {
+            return {
+                heal: 20
+            }
         }
     },
     methods: {
@@ -43,6 +48,11 @@ export default {
             this.health -= damage
             if (this.health < 0)
                 this.health = 0
+        },
+        onBought (name) {
+            this.health += 40
+            if (this.health > this.maxHealth)
+                this.health = this.maxHealth
         }
     }
 }

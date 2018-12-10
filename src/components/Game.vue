@@ -7,10 +7,11 @@
         <progress class="boss-health" :value="bossHealth" max="500"></progress>
 
         <div class="towers">
-            <tower ref="tower" v-for="index in 3" :key="index"></tower>
+            <tower ref="tower" v-for="index in 3" :key="index" @buy="(name) => onBuy(index, name)"></tower>
         </div>
 
         <div class="info">
+            <p>Resources: {{ resources }}</p>
             <button @click="endTurn()">End turn</button>
         </div>
     </div>
@@ -26,7 +27,8 @@ export default {
     data () {
         return {
             bossHealth: 500,
-            bossDamage: 25
+            bossDamage: 25,
+            resources: 1000
         }
     },
     computed: {
@@ -35,12 +37,22 @@ export default {
         }
     },
     methods: {
+        onBuy (index, name) {
+            let tower = this.$refs.tower[index - 1]
+
+            let cost = tower.costs[name]
+            if (this.resources >= cost) {
+                this.resources -= cost
+                tower.onBought(name)
+            }
+        },
         endTurn () {
             let towers = this.$refs.tower
 
             towers.filter(tower => tower.isAlive).forEach(tower => {
                 this.bossHealth -= tower.damage
                 tower.takeDamage(this.bossDamage)
+                this.resources += tower.farm
             })
 
             if (this.bossHealth <= 0)
