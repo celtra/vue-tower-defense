@@ -56,9 +56,9 @@ export default {
             })
 
             if (this.bossHealth <= 0)
-                alert('You won!')
+                this.$router.push({ name: 'Over', params: { won: true } })
             else if (this.isEveryTowerDead)
-                alert('You lost!')
+                this.$router.push({ name: 'Over', params: { won: false } })
         }
     }
 }
